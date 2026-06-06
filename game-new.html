@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>破产重生：金融帝国</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eaeaea;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 加载屏幕 */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-title {
+            font-size: 48px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #b0bec5;
+        }
+
+        /* 主容器 */
+        .game-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 顶部状态栏 */
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: #b0bec5;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .status-value.negative {
+            color: #ff1744;
+        }
+
+        /* 剧情面板 */
+        .story-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 2px solid #ffd700;
+            position: relative;
+        }
+
+        .story-title {
+            font-size: 28px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .story-text {
+            font-size: 16px;
+            line-height: 2;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .story-continue {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .continue-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: none;
+            border-radius: 10px;
+            color: #1a1a2e;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        /* 游戏主界面 */
+        .game-main {
+            display: none;
+        }
+
+        /* 导航标签 */
+        .nav-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .nav-tab.active {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .tab-icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .tab-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* 内容面板 */
+        .content-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        .panel-title {
+            font-size: 24px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 股票交易 */
+        .stock-chart {
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stock-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stock-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .trade-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .trade-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .trade-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+            color: white;
+        }
+
+        .sell-btn {
+            background: linear-gradient(135deg, #ff1744 0%, #ff5252 100%);
+            color: white;
+        }
+
+        /* 期货交易 */
+        .futures-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .futures-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .futures-card:hover {
+            border-color: #ffd700;
+        }
+
+        .futures-card.selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        /* 二元合约 */
+        .binary-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .binary-option {
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .binary-up {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.3) 0%, rgba(0, 230, 118, 0.3) 100%);
+            border: 2px solid #00c853;
+        }
+
+        .binary-down {
+            background: linear-gradient(135deg, rgba(255, 23, 68, 0.3) 0%, rgba(255, 82, 82, 0.3) 100%);
+            border: 2px solid #ff1744;
+        }
+
+        .binary-option:hover {
+            transform: scale(1.05);
+        }
+
+        /* 大富翁 */
+        .monopoly-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .property-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .property-card:hover {
+            border-color: #ffd700;
+        }
+
+        .property-card.owned {
+            border-color: #00c853;
+            background: rgba(0, 200, 83, 0.2);
+        }
+
+        .property-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .property-price {
+            font-size: 12px;
+            color: #ffd700;
+        }
+
+        /* 事件卡片 */
+        .event-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 237, 78, 0.2) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .event-title {
+            font-size: 18px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        /* 消息提示 */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .status-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-tabs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stock-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trade-area {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录屏幕 -->
+    <div class="loading-screen" id="login-screen">
+        <div class="loading-content" style="max-width: 450px;">
+            <h1 class="loading-title">💰 破产重生：金融帝国</h1>
+            <p class="loading-text" style="margin-bottom: 30px;">登录或注册开始游戏</p>
+            
+            <div id="login-form" style="margin-bottom: 20px;">
+                <input type="text" id="login-username" placeholder="用户名" 
+                       style="width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #ffd700; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;">
+                <input type="password" id="login-password" placeholder="密码" 
+                       style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ffd700; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;">
+                <button onclick="handleLogin()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border: none; border-radius: 10px; color: #1a1a2e; font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">
+                    登录
+                </button>
+                <button onclick="showRegister()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 2px solid #ffd700; border-radius: 10px; color: #ffd700; font-size: 18px; font-weight: bold; cursor: pointer;">
+                    注册新账号
+                </button>
+            </div>
+            
+            <div id="register-form" style="display: none; margin-bottom: 20px;">
+                <input type="text" id="register-username" placeholder="用户名 (3-20字符)" 
+                       style="width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #ffd700; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;">
+                <input type="password" id="register-password" placeholder="密码 (至少6字符)" 
+                       style="width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid #ffd700; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;">
+                <input type="password" id="register-password-confirm" placeholder="确认密码" 
+                       style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #ffd700; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;">
+                <button onclick="handleRegister()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); border: none; border-radius: 10px; color: #1a1a2e; font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">
+                    注册
+                </button>
+                <button onclick="showLogin()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 2px solid #ffd700; border-radius: 10px; color: #ffd700; font-size: 18px; font-weight: bold; cursor: pointer;">
+                    返回登录
+                </button>
+            </div>
+            
+            <div id="login-message" style="margin-top: 20px; font-size: 14px; color: #ff6b6b;"></div>
+        </div>
+    </div>
+    
+    <!-- 加载屏幕 -->
+    <div class="loading-screen" id="loading-screen" style="display: none;">
+        <div class="loading-content">
+            <h1 class="loading-title">💰 破产重生：金融帝国</h1>
+            <p class="loading-text">正在加载游戏...</p>
+        </div>
+    </div>
+
+    <!-- 性别选择屏幕 -->
+    <div class="loading-screen" id="gender-screen" style="display: none; z-index: 10000;">
+        <div class="loading-content" style="max-width: 900px;">
+            <h1 class="loading-title">创建你的角色</h1>
+            <p class="loading-text" style="margin-bottom: 30px;">选择你的角色形象，开始重生之路</p>
+            
+            <div style="margin-bottom: 30px; position: relative; z-index: 10001;">
+                <input type="text" id="player-name" placeholder="请输入你的名字" 
+                       style="width: 100%; max-width: 400px; padding: 15px 20px; font-size: 18px; 
+                              border: 2px solid #ffd700; border-radius: 10px; background: rgba(255,255,255,0.1); 
+                              color: white; text-align: center; outline: none; cursor: text;"
+                       onfocus="this.style.background='rgba(255,215,0,0.3)'; this.style.borderColor='#ffed4e';"
+                       onblur="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='#ffd700';">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                <!-- 男性角色 -->
+                <div onclick="selectGender('male')" style="
+                    background: linear-gradient(135deg, rgba(30, 60, 114, 0.3) 0%, rgba(42, 82, 152, 0.3) 100%);
+                    padding: 30px;
+                    border-radius: 20px;
+                    border: 3px solid transparent;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    text-align: center;
+                    position: relative;
+                    overflow: hidden;
+                " onmouseover="this.style.borderColor='#ffd700'; this.style.transform='scale(1.05)';" 
+                   onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)';">
+                    <!-- 动漫风格男性角色 -->
+                    <div style="width: 180px; height: 180px; margin: 0 auto 20px; position: relative; border-radius: 50%; overflow: hidden; border: 3px solid #ffd700; pointer-events: none;">
+                        <svg viewBox="0 0 200 200" style="width: 100%; height: 100%; pointer-events: none;">
+                            <!-- 头发 -->
+                            <ellipse cx="100" cy="80" rx="70" ry="60" fill="#2c1810"/>
+                            <path d="M40 90 Q50 40 100 30 Q150 40 160 90" fill="#2c1810"/>
+                            <path d="M50 85 Q70 50 100 40 Q130 50 150 85" fill="#3d2517"/>
+                            <!-- 脸 -->
+                            <ellipse cx="100" cy="110" rx="60" ry="65" fill="#ffd5b4"/>
+                            <!-- 眼睛 -->
+                            <ellipse cx="75" cy="100" rx="12" ry="15" fill="white"/>
+                            <ellipse cx="125" cy="100" rx="12" ry="15" fill="white"/>
+                            <ellipse cx="75" cy="102" rx="8" ry="10" fill="#4a3728"/>
+                            <ellipse cx="125" cy="102" rx="8" ry="10" fill="#4a3728"/>
+                            <ellipse cx="75" cy="102" rx="4" ry="5" fill="black"/>
+                            <ellipse cx="125" cy="102" rx="4" ry="5" fill="black"/>
+                            <ellipse cx="77" cy="100" rx="2" ry="2" fill="white"/>
+                            <ellipse cx="127" cy="100" rx="2" ry="2" fill="white"/>
+                            <!-- 眉毛 -->
+                            <path d="M60 85 Q75 80 90 85" stroke="#2c1810" stroke-width="3" fill="none"/>
+                            <path d="M110 85 Q125 80 140 85" stroke="#2c1810" stroke-width="3" fill="none"/>
+                            <!-- 鼻子 -->
+                            <path d="M100 105 L100 120 L95 125" stroke="#e5b89a" stroke-width="2" fill="none"/>
+                            <!-- 嘴 -->
+                            <path d="M85 135 Q100 145 115 135" stroke="#d4827a" stroke-width="3" fill="none"/>
+                            <!-- 耳朵 -->
+                            <ellipse cx="40" cy="110" rx="8" ry="15" fill="#ffd5b4"/>
+                            <ellipse cx="160" cy="110" rx="8" ry="15" fill="#ffd5b4"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 22px; font-weight: bold; color: #ffd700; margin-bottom: 10px; pointer-events: none;">精英商人</div>
+                    <div style="font-size: 14px; color: #b0bec5; line-height: 1.6; pointer-events: none;">
+                        曾经的投资大亨<br>
+                        破产后失去一切<br>
+                        从零开始重建帝国
+                    </div>
+                </div>
+                
+                <!-- 女性角色 -->
+                <div onclick="selectGender('female')" style="
+                    background: linear-gradient(135deg, rgba(114, 30, 90, 0.3) 0%, rgba(152, 42, 120, 0.3) 100%);
+                    padding: 30px;
+                    border-radius: 20px;
+                    border: 3px solid transparent;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    text-align: center;
+                    position: relative;
+                    overflow: hidden;
+                " onmouseover="this.style.borderColor='#ffd700'; this.style.transform='scale(1.05)';" 
+                   onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)';">
+                    <!-- 动漫风格女性角色 -->
+                    <div style="width: 180px; height: 180px; margin: 0 auto 20px; position: relative; border-radius: 50%; overflow: hidden; border: 3px solid #ffd700; pointer-events: none;">
+                        <svg viewBox="0 0 200 200" style="width: 100%; height: 100%; pointer-events: none;">
+                            <!-- 长发 -->
+                            <ellipse cx="100" cy="70" rx="75" ry="65" fill="#1a0f0a"/>
+                            <path d="M30 90 Q40 50 100 35 Q160 50 170 90" fill="#1a0f0a"/>
+                            <ellipse cx="35" cy="130" rx="20" ry="50" fill="#1a0f0a"/>
+                            <ellipse cx="165" cy="130" rx="20" ry="50" fill="#1a0f0a"/>
+                            <path d="M25 100 Q30 150 35 180" stroke="#1a0f0a" stroke-width="15" fill="none"/>
+                            <path d="M175 100 Q170 150 165 180" stroke="#1a0f0a" stroke-width="15" fill="none"/>
+                            <!-- 脸 -->
+                            <ellipse cx="100" cy="110" rx="55" ry="60" fill="#ffe5d4"/>
+                            <!-- 眼睛 -->
+                            <ellipse cx="75" cy="100" rx="14" ry="16" fill="white"/>
+                            <ellipse cx="125" cy="100" rx="14" ry="16" fill="white"/>
+                            <ellipse cx="75" cy="102" rx="10" ry="12" fill="#5a4a3a"/>
+                            <ellipse cx="125" cy="102" rx="10" ry="12" fill="#5a4a3a"/>
+                            <ellipse cx="75" cy="102" rx="5" ry="6" fill="black"/>
+                            <ellipse cx="125" cy="102" rx="5" ry="6" fill="black"/>
+                            <ellipse cx="77" cy="100" rx="3" ry="3" fill="white"/>
+                            <ellipse cx="127" cy="100" rx="3" ry="3" fill="white"/>
+                            <!-- 睫毛 -->
+                            <path d="M61 90 L65 85" stroke="#1a0f0a" stroke-width="2"/>
+                            <path d="M68 88 L70 82" stroke="#1a0f0a" stroke-width="2"/>
+                            <path d="M130 88 L132 82" stroke="#1a0f0a" stroke-width="2"/>
+                            <path d="M135 90 L139 85" stroke="#1a0f0a" stroke-width="2"/>
+                            <!-- 眉毛 -->
+                            <path d="M60 85 Q75 80 90 85" stroke="#1a0f0a" stroke-width="2" fill="none"/>
+                            <path d="M110 85 Q125 80 140 85" stroke="#1a0f0a" stroke-width="2" fill="none"/>
+                            <!-- 鼻子 -->
+                            <path d="M100 105 L100 118" stroke="#f5d5c4" stroke-width="2" fill="none"/>
+                            <!-- 嘴 -->
+                            <ellipse cx="100" cy="135" rx="12" ry="6" fill="#ff9999"/>
+                            <!-- 腮红 -->
+                            <ellipse cx="60" cy="115" rx="10" ry="6" fill="#ffb3b3" opacity="0.5"/>
+                            <ellipse cx="140" cy="115" rx="10" ry="6" fill="#ffb3b3" opacity="0.5"/>
+                            <!-- 耳环 -->
+                            <circle cx="45" cy="115" r="3" fill="#ffd700"/>
+                            <circle cx="155" cy="115" r="3" fill="#ffd700"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 22px; font-weight: bold; color: #ffd700; margin-bottom: 10px; pointer-events: none;">商业女王</div>
+                    <div style="font-size: 14px; color: #b0bec5; line-height: 1.6; pointer-events: none;">
+                        曾经的投资女王<br>
+                        破产后失去一切<br>
+                        从零开始重建帝国
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <!-- 状态栏 -->
+        <div class="status-bar" id="status-bar" style="display: none;">
+            <div class="status-card">
+                <div class="status-label">💵 现金</div>
+                <div class="status-value" id="cash">$0</div>
+            </div>
+            <div class="status-card">
+                <div class="status-label">📊 总资产</div>
+                <div class="status-value" id="total-assets">$0</div>
+            </div>
+            <div class="status-card">
+                <div class="status-label">💳 负债</div>
+                <div class="status-value negative" id="debt">$0</div>
+            </div>
+            <div class="status-card">
+                <div class="status-label">📅 第几天</div>
+                <div class="status-value" id="day">1</div>
+            </div>
+        </div>
+
+        <!-- 剧情面板 -->
+        <div class="story-panel" id="story-panel" style="display: none;">
+            <h2 class="story-title" id="story-title"></h2>
+            <div class="story-text" id="story-text"></div>
+            <div class="story-continue" id="story-continue"></div>
+        </div>
+
+        <!-- 游戏主界面 -->
+        <div class="game-main" id="game-main">
+            <!-- 导航标签 -->
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-tab="stock">
+                    <div class="tab-icon">📈</div>
+                    <div class="tab-name">股票</div>
+                </div>
+                <div class="nav-tab" data-tab="futures">
+                    <div class="tab-icon">📊</div>
+                    <div class="tab-name">期货</div>
+                </div>
+                <div class="nav-tab" data-tab="binary">
+                    <div class="tab-icon">🎯</div>
+                    <div class="tab-name">二元合约</div>
+                </div>
+                <div class="nav-tab" data-tab="monopoly">
+                    <div class="tab-icon">🏠</div>
+                    <div class="tab-name">大富翁</div>
+                </div>
+            </div>
+
+            <!-- 股票交易面板 -->
+            <div class="content-panel active" id="stock-panel">
+                <h2 class="panel-title">📈 股票交易</h2>
+                <canvas class="stock-chart" id="stock-chart"></canvas>
+                <div class="stock-info">
+                    <div class="stock-card">
+                        <div class="status-label">当前价格</div>
+                        <div class="status-value" id="stock-price">$100.00</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">涨跌幅</div>
+                        <div class="status-value" id="stock-change">+0.00%</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">持有数量</div>
+                        <div class="status-value" id="stock-holdings">0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">持仓价值</div>
+                        <div class="status-value" id="stock-value">$0</div>
+                    </div>
+                </div>
+                <div class="trade-area">
+                    <div>
+                        <input type="number" class="trade-input" id="stock-amount" placeholder="交易数量" value="10">
+                        <button class="trade-btn buy-btn" onclick="buyStock()">买入</button>
+                    </div>
+                    <div>
+                        <input type="number" class="trade-input" id="stock-sell-amount" placeholder="卖出数量" value="10">
+                        <button class="trade-btn sell-btn" onclick="sellStock()">卖出</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 期货交易面板 -->
+            <div class="content-panel" id="futures-panel">
+                <h2 class="panel-title">📊 期货交易</h2>
+                <div class="futures-options">
+                    <div class="futures-card" onclick="selectFutures('gold')">
+                        <div style="font-size: 40px;">🥇</div>
+                        <div class="property-name">黄金期货</div>
+                        <div class="property-price">保证金: $5,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">杠杆: 10倍</div>
+                    </div>
+                    <div class="futures-card" onclick="selectFutures('oil')">
+                        <div style="font-size: 40px;">🛢️</div>
+                        <div class="property-name">原油期货</div>
+                        <div class="property-price">保证金: $3,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">杠杆: 15倍</div>
+                    </div>
+                    <div class="futures-card" onclick="selectFutures('wheat')">
+                        <div style="font-size: 40px;">🌾</div>
+                        <div class="property-name">小麦期货</div>
+                        <div class="property-price">保证金: $2,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">杠杆: 8倍</div>
+                    </div>
+                </div>
+                <div class="stock-info">
+                    <div class="stock-card">
+                        <div class="status-label">当前价格</div>
+                        <div class="status-value" id="futures-price">$0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">持仓数量</div>
+                        <div class="status-value" id="futures-holdings">0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">保证金</div>
+                        <div class="status-value" id="futures-margin">$0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">浮动盈亏</div>
+                        <div class="status-value" id="futures-pnl">$0</div>
+                    </div>
+                </div>
+                <div class="trade-area">
+                    <div>
+                        <input type="number" class="trade-input" id="futures-amount" placeholder="合约数量" value="1">
+                        <button class="trade-btn buy-btn" onclick="buyFutures()">开多仓</button>
+                    </div>
+                    <div>
+                        <input type="number" class="trade-input" id="futures-sell-amount" placeholder="合约数量" value="1">
+                        <button class="trade-btn sell-btn" onclick="sellFutures()">开空仓</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 二元合约面板 -->
+            <div class="content-panel" id="binary-panel">
+                <h2 class="panel-title">🎯 二元合约</h2>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <p style="font-size: 14px; color: #b0bec5;">预测60秒后价格走势，猜对赢取85%收益！万物皆可预测！</p>
+                </div>
+                
+                <!-- 预测标的选择 -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 16px; color: #ffd700; margin-bottom: 10px;">选择预测标的：</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div onclick="selectBinaryAsset('stock')" class="binary-asset-card" data-asset="stock" style="
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 2px solid #ffd700;
+                            cursor: pointer;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="font-size: 30px;">📈</div>
+                            <div style="font-size: 14px; font-weight: bold;">股票指数</div>
+                        </div>
+                        <div onclick="selectBinaryAsset('gold')" class="binary-asset-card" data-asset="gold" style="
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 2px solid transparent;
+                            cursor: pointer;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="font-size: 30px;">🥇</div>
+                            <div style="font-size: 14px; font-weight: bold;">黄金价格</div>
+                        </div>
+                        <div onclick="selectBinaryAsset('oil')" class="binary-asset-card" data-asset="oil" style="
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 2px solid transparent;
+                            cursor: pointer;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="font-size: 30px;">🛢️</div>
+                            <div style="font-size: 14px; font-weight: bold;">原油价格</div>
+                        </div>
+                        <div onclick="selectBinaryAsset('bitcoin')" class="binary-asset-card" data-asset="bitcoin" style="
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 2px solid transparent;
+                            cursor: pointer;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="font-size: 30px;">₿</div>
+                            <div style="font-size: 14px; font-weight: bold;">比特币</div>
+                        </div>
+                        <div onclick="selectBinaryAsset('weather')" class="binary-asset-card" data-asset="weather" style="
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 2px solid transparent;
+                            cursor: pointer;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="font-size: 30px;">🌡️</div>
+                            <div style="font-size: 14px; font-weight: bold;">气温变化</div>
+                        </div>
+                        <div onclick="selectBinaryAsset('sports')" class="binary-asset-card" data-asset="sports" style="
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 10px;
+                            border: 2px solid transparent;
+                            cursor: pointer;
+                            text-align: center;
+                            transition: all 0.3s;
+                        ">
+                            <div style="font-size: 30px;">⚽</div>
+                            <div style="font-size: 14px; font-weight: bold;">比赛结果</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stock-info">
+                    <div class="stock-card">
+                        <div class="status-label">当前价格</div>
+                        <div class="status-value" id="binary-price">$100.00</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">倒计时</div>
+                        <div class="status-value" id="binary-timer">60秒</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">投注金额</div>
+                        <div class="status-value" id="binary-bet">$0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">潜在收益</div>
+                        <div class="status-value" id="binary-potential">$0</div>
+                    </div>
+                </div>
+                <input type="number" class="trade-input" id="binary-amount" placeholder="投注金额" value="100" style="margin-bottom: 20px;">
+                <div class="binary-options">
+                    <div class="binary-option binary-up" onclick="binaryBet('up')">
+                        <div style="font-size: 60px; margin-bottom: 10px;">📈</div>
+                        <div style="font-size: 24px; font-weight: bold;">看涨</div>
+                        <div style="font-size: 14px; margin-top: 10px;">收益率: 85%</div>
+                    </div>
+                    <div class="binary-option binary-down" onclick="binaryBet('down')">
+                        <div style="font-size: 60px; margin-bottom: 10px;">📉</div>
+                        <div style="font-size: 24px; font-weight: bold;">看跌</div>
+                        <div style="font-size: 14px; margin-top: 10px;">收益率: 85%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 大富翁面板 -->
+            <div class="content-panel" id="monopoly-panel">
+                <h2 class="panel-title">🏠 大富翁投资（四人模式）</h2>
+                
+                <!-- 玩家状态 -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
+                    <div id="player-0-status" style="background: rgba(255,0,0,0.2); padding: 15px; border-radius: 10px; border: 2px solid #FF0000;">
+                        <div style="font-size: 20px; margin-bottom: 5px;">👤 你</div>
+                        <div style="font-size: 14px; color: #ffd700;">现金: $15,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">房产: 0</div>
+                    </div>
+                    <div id="player-1-status" style="background: rgba(0,0,255,0.2); padding: 15px; border-radius: 10px; border: 2px solid transparent;">
+                        <div style="font-size: 20px; margin-bottom: 5px;">🤖 AI-张</div>
+                        <div style="font-size: 14px; color: #ffd700;">现金: $15,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">房产: 0</div>
+                    </div>
+                    <div id="player-2-status" style="background: rgba(0,255,0,0.2); padding: 15px; border-radius: 10px; border: 2px solid transparent;">
+                        <div style="font-size: 20px; margin-bottom: 5px;">🤖 AI-李</div>
+                        <div style="font-size: 14px; color: #ffd700;">现金: $15,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">房产: 0</div>
+                    </div>
+                    <div id="player-3-status" style="background: rgba(255,0,255,0.2); padding: 15px; border-radius: 10px; border: 2px solid transparent;">
+                        <div style="font-size: 20px; margin-bottom: 5px;">🤖 AI-王</div>
+                        <div style="font-size: 14px; color: #ffd700;">现金: $15,000</div>
+                        <div style="font-size: 12px; color: #b0bec5;">房产: 0</div>
+                    </div>
+                </div>
+                
+                <!-- 当前回合信息 -->
+                <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: rgba(255,215,0,0.2); border-radius: 10px;">
+                    <div style="font-size: 18px; color: #ffd700;">
+                        第 <span id="turn-number">1</span> 回合 | 
+                        当前: <span id="current-player-name">你</span>
+                    </div>
+                </div>
+                
+                <!-- 棋盘 -->
+                <div id="monopoly-board" style="
+                    width: 100%;
+                    max-width: 800px;
+                    height: 600px;
+                    margin: 0 auto 20px;
+                    background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+                    border-radius: 10px;
+                    position: relative;
+                    border: 4px solid #8B4513;
+                    overflow: hidden;
+                ">
+                    <!-- 棋盘格子将由JavaScript生成 -->
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button class="continue-btn" onclick="rollDice()">🎲 掷骰子</button>
+                </div>
+                
+                <div class="stock-info">
+                    <div class="stock-card">
+                        <div class="status-label">房产数量</div>
+                        <div class="status-value" id="property-count">0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">每日租金</div>
+                        <div class="status-value" id="daily-rent">$0</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">当前位置</div>
+                        <div class="status-value" id="current-position">起点</div>
+                    </div>
+                    <div class="stock-card">
+                        <div class="status-label">总资产</div>
+                        <div class="status-value" id="monopoly-assets">$0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./game-new.js"></script>
+    <script>
+        // 纯静态版本 - 使用localStorage保存数据
+        
+        // 显示注册表单
+        function showRegister() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('login-message').textContent = '';
+        }
+        
+        // 显示登录表单
+        function showLogin() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('login-message').textContent = '';
+        }
+        
+        // 处理登录
+        function handleLogin() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) {
+                document.getElementById('login-message').textContent = '请输入用户名和密码';
+                return;
+            }
+            
+            // 从localStorage读取用户数据
+            const users = JSON.parse(localStorage.getItem('game_users') || '{}');
+            const user = users[username];
+            
+            if (!user) {
+                document.getElementById('login-message').textContent = '用户名不存在';
+                return;
+            }
+            
+            if (user.password !== password) {
+                document.getElementById('login-message').textContent = '密码错误';
+                return;
+            }
+            
+            // 登录成功
+            localStorage.setItem('current_user', username);
+            document.getElementById('login-message').style.color = '#00ff00';
+            document.getElementById('login-message').textContent = '登录成功！正在加载游戏...';
+            
+            setTimeout(() => {
+                startGame();
+            }, 1000);
+        }
+        
+        // 处理注册
+        function handleRegister() {
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value;
+            const passwordConfirm = document.getElementById('register-password-confirm').value;
+            
+            if (!username || !password || !passwordConfirm) {
+                document.getElementById('login-message').textContent = '请填写所有字段';
+                return;
+            }
+            
+            if (username.length < 3 || username.length > 20) {
+                document.getElementById('login-message').textContent = '用户名长度应为3-20个字符';
+                return;
+            }
+            
+            if (password.length < 6) {
+                document.getElementById('login-message').textContent = '密码长度至少6个字符';
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                document.getElementById('login-message').textContent = '两次密码不一致';
+                return;
+            }
+            
+            // 从localStorage读取用户数据
+            const users = JSON.parse(localStorage.getItem('game_users') || '{}');
+            
+            if (users[username]) {
+                document.getElementById('login-message').textContent = '用户名已存在';
+                return;
+            }
+            
+            // 保存用户数据
+            users[username] = {
+                username: username,
+                password: password,
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('game_users', JSON.stringify(users));
+            localStorage.setItem('current_user', username);
+            
+            document.getElementById('login-message').style.color = '#00ff00';
+            document.getElementById('login-message').textContent = '注册成功！正在加载游戏...';
+            
+            setTimeout(() => {
+                startGame();
+            }, 1000);
+        }
+        
+        // 开始游戏
+        function startGame() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'flex';
+            
+            // 加载存档
+            const username = localStorage.getItem('current_user');
+            const saves = JSON.parse(localStorage.getItem('game_saves') || '{}');
+            const saveData = saves[username];
+            
+            if (saveData && window.game) {
+                window.game.loadSaveData(saveData);
+            }
+            
+            // 初始化游戏
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('gender-screen').style.display = 'flex';
+            }, 1500);
+        }
+        
+        // 保存游戏
+        function saveGame() {
+            if (!window.game) return;
+            
+            const username = localStorage.getItem('current_user');
+            if (!username) return;
+            
+            const gameData = {
+                player: window.game.state.player,
+                stock: window.game.state.stock,
+                futures: window.game.state.futures,
+                binary: window.game.state.binary,
+                monopoly: window.game.state.monopoly,
+                story: window.game.state.story,
+                savedAt: new Date().toISOString()
+            };
+            
+            const saves = JSON.parse(localStorage.getItem('game_saves') || '{}');
+            saves[username] = gameData;
+            localStorage.setItem('game_saves', JSON.stringify(saves));
+            
+            console.log('游戏已保存');
+        }
+        
+        // 自动保存（每分钟）
+        setInterval(() => {
+            if (window.game) {
+                saveGame();
+            }
+        }, 60000);
+        
+        // 页面关闭时保存
+        window.addEventListener('beforeunload', () => {
+            saveGame();
+        });
+        
+        // 页面加载时检查登录状态
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('current_user');
+            
+            if (savedUser) {
+                // 自动登录
+                startGame();
+            }
+        });
+        
+        // 全局性别选择函数
+        function selectGender(gender) {
+            if (window.game) {
+                window.game.selectGender(gender);
+            }
+        }
+        
+        // 二元合约标的选择函数
+        function selectBinaryAsset(asset) {
+            if (window.game) {
+                // 更新UI
+                document.querySelectorAll('.binary-asset-card').forEach(card => {
+                    card.style.borderColor = 'transparent';
+                });
+                document.querySelector(`[data-asset="${asset}"]`).style.borderColor = '#ffd700';
+                
+                // 更新游戏状态
+                window.game.state.binary.asset = asset;
+                window.game.updateUI();
+            }
+        }
+    </script>
+</body>
+</html>
