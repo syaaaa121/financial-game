@@ -1456,3 +1456,12 @@ document.addEventListener('DOMContentLoaded', () => {
     game = new GameController();
     window.game = game; // 将游戏实例暴露到全局
 });
+
+// 全局函数：选择性别
+function selectGender(gender) {
+    if (window.game) {
+        window.game.selectGender(gender);
+    } else {
+        console.error('游戏未初始化');
+    }
+}
