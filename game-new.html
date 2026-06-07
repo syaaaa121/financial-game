@@ -477,7 +477,7 @@
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
-                <!-- 男性角色 -->
+                <!-- 男性角色 - 原神/乙游风格 -->
                 <div onclick="selectGender('male')" style="
                     background: linear-gradient(135deg, rgba(30, 60, 114, 0.3) 0%, rgba(42, 82, 152, 0.3) 100%);
                     padding: 30px;
@@ -490,34 +490,59 @@
                     overflow: hidden;
                 " onmouseover="this.style.borderColor='#ffd700'; this.style.transform='scale(1.05)';" 
                    onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)';">
-                    <!-- 动漫风格男性角色 -->
-                    <div style="width: 180px; height: 180px; margin: 0 auto 20px; position: relative; border-radius: 50%; overflow: hidden; border: 3px solid #ffd700; pointer-events: none;">
+                    <!-- 原神风格男性角色 -->
+                    <div style="width: 200px; height: 200px; margin: 0 auto 20px; position: relative; border-radius: 50%; overflow: hidden; border: 3px solid #ffd700; pointer-events: none; background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);">
                         <svg viewBox="0 0 200 200" style="width: 100%; height: 100%; pointer-events: none;">
-                            <!-- 头发 -->
-                            <ellipse cx="100" cy="80" rx="70" ry="60" fill="#2c1810"/>
-                            <path d="M40 90 Q50 40 100 30 Q150 40 160 90" fill="#2c1810"/>
-                            <path d="M50 85 Q70 50 100 40 Q130 50 150 85" fill="#3d2517"/>
+                            <!-- 银灰色短发（原神风格） -->
+                            <defs>
+                                <linearGradient id="maleHair" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#C0C0C0"/>
+                                    <stop offset="50%" style="stop-color:#A8A8A8"/>
+                                    <stop offset="100%" style="stop-color:#909090"/>
+                                </linearGradient>
+                                <linearGradient id="maleSkin" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFE4D0"/>
+                                    <stop offset="100%" style="stop-color:#FFD5B8"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- 头发底层 -->
+                            <ellipse cx="100" cy="75" rx="65" ry="55" fill="url(#maleHair)"/>
+                            <!-- 刘海 -->
+                            <path d="M45 85 Q55 45 100 35 Q145 45 155 85" fill="url(#maleHair)"/>
+                            <path d="M50 80 Q70 50 100 42 Q130 50 150 80" fill="#B8B8B8"/>
+                            <!-- 发丝细节 -->
+                            <path d="M60 75 Q80 55 100 50 Q120 55 140 75" stroke="#D0D0D0" stroke-width="2" fill="none" opacity="0.6"/>
+                            <path d="M70 70 Q90 52 100 48 Q110 52 130 70" stroke="#D0D0D0" stroke-width="1.5" fill="none" opacity="0.5"/>
                             <!-- 脸 -->
-                            <ellipse cx="100" cy="110" rx="60" ry="65" fill="#ffd5b4"/>
-                            <!-- 眼睛 -->
-                            <ellipse cx="75" cy="100" rx="12" ry="15" fill="white"/>
-                            <ellipse cx="125" cy="100" rx="12" ry="15" fill="white"/>
-                            <ellipse cx="75" cy="102" rx="8" ry="10" fill="#4a3728"/>
-                            <ellipse cx="125" cy="102" rx="8" ry="10" fill="#4a3728"/>
-                            <ellipse cx="75" cy="102" rx="4" ry="5" fill="black"/>
-                            <ellipse cx="125" cy="102" rx="4" ry="5" fill="black"/>
-                            <ellipse cx="77" cy="100" rx="2" ry="2" fill="white"/>
-                            <ellipse cx="127" cy="100" rx="2" ry="2" fill="white"/>
-                            <!-- 眉毛 -->
-                            <path d="M60 85 Q75 80 90 85" stroke="#2c1810" stroke-width="3" fill="none"/>
-                            <path d="M110 85 Q125 80 140 85" stroke="#2c1810" stroke-width="3" fill="none"/>
+                            <ellipse cx="100" cy="115" rx="55" ry="60" fill="url(#maleSkin)"/>
+                            <!-- 眼睛（原神风格大眼） -->
+                            <ellipse cx="75" cy="105" rx="15" ry="18" fill="white"/>
+                            <ellipse cx="125" cy="105" rx="15" ry="18" fill="white"/>
+                            <!-- 虹膜（琥珀色） -->
+                            <ellipse cx="75" cy="107" rx="11" ry="14" fill="#D4AF37"/>
+                            <ellipse cx="125" cy="107" rx="11" ry="14" fill="#D4AF37"/>
+                            <!-- 瞳孔 -->
+                            <ellipse cx="75" cy="108" rx="6" ry="8" fill="#1a1a2e"/>
+                            <ellipse cx="125" cy="108" rx="6" ry="8" fill="#1a1a2e"/>
+                            <!-- 高光 -->
+                            <ellipse cx="78" cy="103" rx="4" ry="5" fill="white" opacity="0.9"/>
+                            <ellipse cx="128" cy="103" rx="4" ry="5" fill="white" opacity="0.9"/>
+                            <ellipse cx="73" cy="110" rx="2" ry="2" fill="white" opacity="0.6"/>
+                            <ellipse cx="123" cy="110" rx="2" ry="2" fill="white" opacity="0.6"/>
+                            <!-- 眉毛（精致） -->
+                            <path d="M58 88 Q75 82 92 88" stroke="#808080" stroke-width="2.5" fill="none"/>
+                            <path d="M108 88 Q125 82 142 88" stroke="#808080" stroke-width="2.5" fill="none"/>
                             <!-- 鼻子 -->
-                            <path d="M100 105 L100 120 L95 125" stroke="#e5b89a" stroke-width="2" fill="none"/>
-                            <!-- 嘴 -->
-                            <path d="M85 135 Q100 145 115 135" stroke="#d4827a" stroke-width="3" fill="none"/>
+                            <path d="M100 110 L100 125 L96 128" stroke="#E5C4A8" stroke-width="2" fill="none"/>
+                            <!-- 嘴（微笑） -->
+                            <path d="M88 138 Q100 145 112 138" stroke="#D4827A" stroke-width="2.5" fill="none"/>
                             <!-- 耳朵 -->
-                            <ellipse cx="40" cy="110" rx="8" ry="15" fill="#ffd5b4"/>
-                            <ellipse cx="160" cy="110" rx="8" ry="15" fill="#ffd5b4"/>
+                            <ellipse cx="45" cy="115" rx="8" ry="15" fill="url(#maleSkin)"/>
+                            <ellipse cx="155" cy="115" rx="8" ry="15" fill="url(#maleSkin)"/>
+                            <!-- 脖子 -->
+                            <rect x="85" y="170" width="30" height="30" fill="url(#maleSkin)"/>
+                            <!-- 衣领 -->
+                            <path d="M70 185 L100 175 L130 185" stroke="#2c3e50" stroke-width="3" fill="none"/>
                         </svg>
                     </div>
                     <div style="font-size: 22px; font-weight: bold; color: #ffd700; margin-bottom: 10px; pointer-events: none;">精英商人</div>
@@ -528,7 +553,7 @@
                     </div>
                 </div>
                 
-                <!-- 女性角色 -->
+                <!-- 女性角色 - 原神/乙游风格 -->
                 <div onclick="selectGender('female')" style="
                     background: linear-gradient(135deg, rgba(114, 30, 90, 0.3) 0%, rgba(152, 42, 120, 0.3) 100%);
                     padding: 30px;
@@ -541,45 +566,76 @@
                     overflow: hidden;
                 " onmouseover="this.style.borderColor='#ffd700'; this.style.transform='scale(1.05)';" 
                    onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)';">
-                    <!-- 动漫风格女性角色 -->
-                    <div style="width: 180px; height: 180px; margin: 0 auto 20px; position: relative; border-radius: 50%; overflow: hidden; border: 3px solid #ffd700; pointer-events: none;">
+                    <!-- 原神风格女性角色 -->
+                    <div style="width: 200px; height: 200px; margin: 0 auto 20px; position: relative; border-radius: 50%; overflow: hidden; border: 3px solid #ffd700; pointer-events: none; background: linear-gradient(180deg, #FFB6C1 0%, #FFF0F5 100%);">
                         <svg viewBox="0 0 200 200" style="width: 100%; height: 100%; pointer-events: none;">
-                            <!-- 长发 -->
-                            <ellipse cx="100" cy="70" rx="75" ry="65" fill="#1a0f0a"/>
-                            <path d="M30 90 Q40 50 100 35 Q160 50 170 90" fill="#1a0f0a"/>
-                            <ellipse cx="35" cy="130" rx="20" ry="50" fill="#1a0f0a"/>
-                            <ellipse cx="165" cy="130" rx="20" ry="50" fill="#1a0f0a"/>
-                            <path d="M25 100 Q30 150 35 180" stroke="#1a0f0a" stroke-width="15" fill="none"/>
-                            <path d="M175 100 Q170 150 165 180" stroke="#1a0f0a" stroke-width="15" fill="none"/>
+                            <!-- 金色长发（原神风格） -->
+                            <defs>
+                                <linearGradient id="femaleHair" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFE55C"/>
+                                    <stop offset="50%" style="stop-color:#FFD700"/>
+                                    <stop offset="100%" style="stop-color:#DAA520"/>
+                                </linearGradient>
+                                <linearGradient id="femaleSkin" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFF0E5"/>
+                                    <stop offset="100%" style="stop-color:#FFE4D0"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- 长发底层 -->
+                            <ellipse cx="100" cy="70" rx="70" ry="60" fill="url(#femaleHair)"/>
+                            <!-- 刘海 -->
+                            <path d="M35 85 Q50 40 100 30 Q150 40 165 85" fill="url(#femaleHair)"/>
+                            <path d="M40 80 Q60 45 100 35 Q140 45 160 80" fill="#FFE55C"/>
+                            <!-- 发丝细节 -->
+                            <path d="M50 75 Q70 50 100 40 Q130 50 150 75" stroke="#FFF5B0" stroke-width="2" fill="none" opacity="0.7"/>
+                            <path d="M60 70 Q80 48 100 38 Q120 48 140 70" stroke="#FFF5B0" stroke-width="1.5" fill="none" opacity="0.6"/>
+                            <!-- 侧发 -->
+                            <ellipse cx="35" cy="130" rx="18" ry="45" fill="url(#femaleHair)"/>
+                            <ellipse cx="165" cy="130" rx="18" ry="45" fill="url(#femaleHair)"/>
+                            <path d="M25 100 Q30 145 35 175" stroke="url(#femaleHair)" stroke-width="12" fill="none"/>
+                            <path d="M175 100 Q170 145 165 175" stroke="url(#femaleHair)" stroke-width="12" fill="none"/>
                             <!-- 脸 -->
-                            <ellipse cx="100" cy="110" rx="55" ry="60" fill="#ffe5d4"/>
-                            <!-- 眼睛 -->
-                            <ellipse cx="75" cy="100" rx="14" ry="16" fill="white"/>
-                            <ellipse cx="125" cy="100" rx="14" ry="16" fill="white"/>
-                            <ellipse cx="75" cy="102" rx="10" ry="12" fill="#5a4a3a"/>
-                            <ellipse cx="125" cy="102" rx="10" ry="12" fill="#5a4a3a"/>
-                            <ellipse cx="75" cy="102" rx="5" ry="6" fill="black"/>
-                            <ellipse cx="125" cy="102" rx="5" ry="6" fill="black"/>
-                            <ellipse cx="77" cy="100" rx="3" ry="3" fill="white"/>
-                            <ellipse cx="127" cy="100" rx="3" ry="3" fill="white"/>
+                            <ellipse cx="100" cy="115" rx="52" ry="58" fill="url(#femaleSkin)"/>
+                            <!-- 眼睛（原神风格大眼） -->
+                            <ellipse cx="75" cy="105" rx="16" ry="19" fill="white"/>
+                            <ellipse cx="125" cy="105" rx="16" ry="19" fill="white"/>
+                            <!-- 虹膜（紫罗兰色） -->
+                            <ellipse cx="75" cy="107" rx="12" ry="15" fill="#9B59B6"/>
+                            <ellipse cx="125" cy="107" rx="12" ry="15" fill="#9B59B6"/>
+                            <!-- 瞳孔 -->
+                            <ellipse cx="75" cy="108" rx="7" ry="9" fill="#2c1810"/>
+                            <ellipse cx="125" cy="108" rx="7" ry="9" fill="#2c1810"/>
+                            <!-- 高光 -->
+                            <ellipse cx="78" cy="102" rx="5" ry="6" fill="white" opacity="0.9"/>
+                            <ellipse cx="128" cy="102" rx="5" ry="6" fill="white" opacity="0.9"/>
+                            <ellipse cx="73" cy="111" rx="2.5" ry="2.5" fill="white" opacity="0.6"/>
+                            <ellipse cx="123" cy="111" rx="2.5" ry="2.5" fill="white" opacity="0.6"/>
                             <!-- 睫毛 -->
-                            <path d="M61 90 L65 85" stroke="#1a0f0a" stroke-width="2"/>
-                            <path d="M68 88 L70 82" stroke="#1a0f0a" stroke-width="2"/>
-                            <path d="M130 88 L132 82" stroke="#1a0f0a" stroke-width="2"/>
-                            <path d="M135 90 L139 85" stroke="#1a0f0a" stroke-width="2"/>
-                            <!-- 眉毛 -->
-                            <path d="M60 85 Q75 80 90 85" stroke="#1a0f0a" stroke-width="2" fill="none"/>
-                            <path d="M110 85 Q125 80 140 85" stroke="#1a0f0a" stroke-width="2" fill="none"/>
+                            <path d="M60 95 Q65 92 70 95" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+                            <path d="M80 94 Q85 91 90 95" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+                            <path d="M110 95 Q115 91 120 94" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+                            <path d="M130 95 Q135 92 140 95" stroke="#2c1810" stroke-width="1.5" fill="none"/>
+                            <!-- 眉毛（精致） -->
+                            <path d="M58 88 Q75 82 92 88" stroke="#8B4513" stroke-width="2" fill="none"/>
+                            <path d="M108 88 Q125 82 142 88" stroke="#8B4513" stroke-width="2" fill="none"/>
                             <!-- 鼻子 -->
-                            <path d="M100 105 L100 118" stroke="#f5d5c4" stroke-width="2" fill="none"/>
-                            <!-- 嘴 -->
-                            <ellipse cx="100" cy="135" rx="12" ry="6" fill="#ff9999"/>
+                            <path d="M100 110 L100 123 L97 126" stroke="#E5C4A8" stroke-width="1.5" fill="none"/>
+                            <!-- 嘴（微笑） -->
+                            <path d="M88 136 Q100 143 112 136" stroke="#E88A8A" stroke-width="2" fill="none"/>
                             <!-- 腮红 -->
-                            <ellipse cx="60" cy="115" rx="10" ry="6" fill="#ffb3b3" opacity="0.5"/>
-                            <ellipse cx="140" cy="115" rx="10" ry="6" fill="#ffb3b3" opacity="0.5"/>
+                            <ellipse cx="60" cy="120" rx="10" ry="6" fill="#FFB6C1" opacity="0.4"/>
+                            <ellipse cx="140" cy="120" rx="10" ry="6" fill="#FFB6C1" opacity="0.4"/>
+                            <!-- 耳朵 -->
+                            <ellipse cx="48" cy="115" rx="7" ry="13" fill="url(#femaleSkin)"/>
+                            <ellipse cx="152" cy="115" rx="7" ry="13" fill="url(#femaleSkin)"/>
                             <!-- 耳环 -->
-                            <circle cx="45" cy="115" r="3" fill="#ffd700"/>
-                            <circle cx="155" cy="115" r="3" fill="#ffd700"/>
+                            <circle cx="48" cy="128" r="3" fill="#FFD700"/>
+                            <circle cx="152" cy="128" r="3" fill="#FFD700"/>
+                            <!-- 脖子 -->
+                            <rect x="87" y="170" width="26" height="30" fill="url(#femaleSkin)"/>
+                            <!-- 项链 -->
+                            <path d="M80 180 Q100 185 120 180" stroke="#FFD700" stroke-width="1.5" fill="none"/>
+                            <circle cx="100" cy="186" r="4" fill="#FFD700"/>
                         </svg>
                     </div>
                     <div style="font-size: 22px; font-weight: bold; color: #ffd700; margin-bottom: 10px; pointer-events: none;">商业女王</div>
@@ -1035,20 +1091,30 @@
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('loading-screen').style.display = 'flex';
             
-            // 加载存档（使用默认用户）
-            const username = localStorage.getItem('current_user') || 'default_player';
-            const saves = JSON.parse(localStorage.getItem('game_saves') || '{}');
-            const saveData = saves[username];
+            // 等待游戏实例初始化
+            const waitForGame = () => {
+                if (window.game) {
+                    // 游戏已初始化，加载存档
+                    const username = localStorage.getItem('current_user') || 'default_player';
+                    const saves = JSON.parse(localStorage.getItem('game_saves') || '{}');
+                    const saveData = saves[username];
+                    
+                    if (saveData) {
+                        window.game.loadSaveData(saveData);
+                    }
+                    
+                    // 显示角色选择
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.display = 'none';
+                        document.getElementById('gender-screen').style.display = 'flex';
+                    }, 1000);
+                } else {
+                    // 游戏未初始化，等待100ms后重试
+                    setTimeout(waitForGame, 100);
+                }
+            };
             
-            if (saveData && window.game) {
-                window.game.loadSaveData(saveData);
-            }
-            
-            // 初始化游戏
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('gender-screen').style.display = 'flex';
-            }, 1500);
+            waitForGame();
         }
         
         // 保存游戏
@@ -1104,8 +1170,17 @@
                 console.log('调用game.selectGender');
                 window.game.selectGender(gender);
             } else {
-                console.error('游戏未初始化！');
-                alert('游戏加载中，请稍后再试...');
+                console.log('游戏未初始化，等待500ms后重试...');
+                // 等待游戏初始化完成后重试
+                setTimeout(() => {
+                    if (window.game) {
+                        console.log('游戏已初始化，调用selectGender');
+                        window.game.selectGender(gender);
+                    } else {
+                        console.error('游戏初始化失败');
+                        alert('游戏加载失败，请刷新页面重试');
+                    }
+                }, 500);
             }
         }
         
