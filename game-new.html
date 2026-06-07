@@ -415,8 +415,8 @@
     </style>
 </head>
 <body>
-    <!-- 登录屏幕 -->
-    <div class="loading-screen" id="login-screen">
+    <!-- 登录屏幕（已禁用） -->
+    <div class="loading-screen" id="login-screen" style="display: none;">
         <div class="loading-content" style="max-width: 450px;">
             <h1 class="loading-title">💰 破产重生：金融帝国</h1>
             <p class="loading-text" style="margin-bottom: 30px;">登录或注册开始游戏</p>
@@ -1035,8 +1035,8 @@
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('loading-screen').style.display = 'flex';
             
-            // 加载存档
-            const username = localStorage.getItem('current_user');
+            // 加载存档（使用默认用户）
+            const username = localStorage.getItem('current_user') || 'default_player';
             const saves = JSON.parse(localStorage.getItem('game_saves') || '{}');
             const saveData = saves[username];
             
@@ -1087,14 +1087,12 @@
             saveGame();
         });
         
-        // 页面加载时检查登录状态
+        // 页面加载时直接开始游戏（跳过登录）
         window.addEventListener('load', () => {
-            const savedUser = localStorage.getItem('current_user');
-            
-            if (savedUser) {
-                // 自动登录
+            // 直接开始游戏，不需要登录
+            setTimeout(() => {
                 startGame();
-            }
+            }, 500);
         });
         
         // 全局性别选择函数
