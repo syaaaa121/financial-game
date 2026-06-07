@@ -329,13 +329,19 @@ class GameController {
 
     // 选择性别
     selectGender(gender) {
+        console.log('GameController.selectGender被调用');
+        
         // 获取玩家输入的姓名
         const nameInput = document.getElementById('player-name');
         const playerName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : '玩家';
         
+        console.log('玩家姓名:', playerName);
+        console.log('性别:', gender);
+        
         this.state.player.gender = gender;
         this.state.player.name = playerName;
         
+        console.log('隐藏gender-screen，显示剧情');
         document.getElementById('gender-screen').style.display = 'none';
         this.showStory();
     }
@@ -1456,12 +1462,3 @@ document.addEventListener('DOMContentLoaded', () => {
     game = new GameController();
     window.game = game; // 将游戏实例暴露到全局
 });
-
-// 全局函数：选择性别
-function selectGender(gender) {
-    if (window.game) {
-        window.game.selectGender(gender);
-    } else {
-        console.error('游戏未初始化');
-    }
-}

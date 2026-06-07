@@ -1097,8 +1097,15 @@
         
         // 全局性别选择函数
         function selectGender(gender) {
+            console.log('selectGender被调用，gender:', gender);
+            console.log('window.game存在:', !!window.game);
+            
             if (window.game) {
+                console.log('调用game.selectGender');
                 window.game.selectGender(gender);
+            } else {
+                console.error('游戏未初始化！');
+                alert('游戏加载中，请稍后再试...');
             }
         }
         
